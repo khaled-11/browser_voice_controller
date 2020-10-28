@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Browser Controller</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div id="controls">
+      <center>
+        <button id="recordButton">Record</button>
+            <button id="stopButton" disabled>Stop</button>
+      </center>
+    </div>
+    <br>
+    <br>
+    <center>
+      <br>
+      <br>
+      <br>
+      <p><%=intent%></p>
+      <br>
+      <p><%=entity%></p>
+    </center>
+
+    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+  	<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+  
+    <script>
+      // Get the URL
+      URL = window.URL
+
+      var gumStream; 						//stream from getUserMedia()
+      var rec; 							//Recorder.js object
+      var input; 							//MediaStreamAudioSourceNode we'll be recording
+
+      // shim for AudioContext when it's not avb. 
+      var AudioContext = window.AudioContext || window.webkitAudioContext;
+      var audioContext //audio context to help us record
+
+      var recordButton = document.getElementById("recordButton");
+      var stopButton = document.getElementById("stopButton");
+
+      //add events to those 2 buttons
+      recordButton.addEventListener("click", startRecording);
+      stopButton.addEventListener("click", stopRecording);
+
+      function startRecording() {
+          var constraints = { audio: true, video:false }
+          recordButton.disabled = true;
+          stopButton.disabled = false;
+          navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+          console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
+          audioContext = new AudioContext();
+          /*  assign to gumStream for later use  */
+          gumStream = stream;
+          /* use the stream */
+          input = audioContext.createMediaStreamSource(stream);
+          rec = new Recorder(input,{numChannels:1})
+          //start the recording process
+          rec.record()
+        }).catch(function(err) {
+            recordButton.disabled = false;
+            stopButton.disabled = true;
+        });
+      }
+
+      function stopRecording() {
+        stopButton.disabled = true;
+        recordButton.disabled = false;        
+        rec.stop();
+        rec.exportWAV(createDownloadLink);
+      }
+
+      function createDownloadLink(blob) {
+        var url = URL.createObjectURL(blob);
+        sendAudioFile(blob);
+      }
+
+
+
+
+      async function sendAudioFile(blob) {
+        var fd = new FormData();
+        dd = "fdfsdds"
+        fd.append('file', blob, JSON.stringify(dd));
+        fetch('/',
+        {
+            method: 'post',
+            body: fd
+        }); 
+      }
+
+
+      async function senddsAudioFile(file) {
+        const formData = new FormData();
+        formData.append('audio-file', file);
+        ss = {"sds":"dsjk"}
+        const response = await fetch('https://2aacdb020779.ngrok.io', {
+          method: 'POST',
+          headers: {
+            'Accept': 'multipart/form-data',
+            'Content-Type': 'multipart/form-data'
+          },
+          body: ss
+      })
+}
+
+
+async function sendAuddsFile(file) {
+        const formData = new FormData();
+        formData.append('audio-file', file);
+
+        fetch('http://localhost:3370/', {
+          method: "POST",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        }).then((res) => {
+          console.log("this is res", res)
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
+    </script>
+
+  </body>
+</html>
