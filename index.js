@@ -6,7 +6,7 @@ speech = require("./wit_post_speech"),
 utterances= require("./get_utterances"),
 path = require("path");
 
-//utt();
+utt();
 async function utt(){
   utters = await utterances();
   console.log(utters);
