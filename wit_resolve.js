@@ -10,7 +10,7 @@ module.exports = async (text) => {
         method: 'GET',
         uri: encodeURI(`https://api.wit.ai/message?v=20200513&q=${text}`),
         headers: {
-            Authorization: `Bearer ${process.env.WIT_KEY}`
+            Authorization: `Bearer D7XRNXUP5ASID2BBLZLBXOCP7BZWI4FX`
         }};
     state = await JSON.parse(await rp(options));
     }

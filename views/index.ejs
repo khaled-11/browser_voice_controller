@@ -27,6 +27,7 @@
       <p><%=intent%></p>
       <br>
       <p><%=entity%></p>
+
     </center>
 
     <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
@@ -95,41 +96,10 @@
             method: 'post',
             body: fd
         }); 
+        setTimeout(() => {  window.parent.location.reload(); }, 2000);
+        
       }
 
-
-      async function senddsAudioFile(file) {
-        const formData = new FormData();
-        formData.append('audio-file', file);
-        ss = {"sds":"dsjk"}
-        const response = await fetch('https://2aacdb020779.ngrok.io', {
-          method: 'POST',
-          headers: {
-            'Accept': 'multipart/form-data',
-            'Content-Type': 'multipart/form-data'
-          },
-          body: ss
-      })
-}
-
-
-async function sendAuddsFile(file) {
-        const formData = new FormData();
-        formData.append('audio-file', file);
-
-        fetch('http://localhost:3370/', {
-          method: "POST",
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        }).then((res) => {
-          console.log("this is res", res)
-        }).catch((err) => {
-          console.log(err)
-        })
-      }
     </script>
 
   </body>
