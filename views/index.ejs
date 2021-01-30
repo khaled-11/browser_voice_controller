@@ -4,35 +4,26 @@
     <meta charset="UTF-8">
     <title>Browser Controller</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
   </head>
   <body>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div id="controls">
-      <center>
-        <button id="recordButton">Record</button>
-            <button id="stopButton" disabled>Stop</button>
-      </center>
-    </div>
-    <br>
-    <br>
     <center>
-      <br>
-      <br>
-      <br>
-      <p><%=intent%></p>
-      <br>
-      <p><%=entity%></p>
+    <div id="controls" style="margin-top: 40px;">
+        <button id="recordButton">Record</button>
+        <button id="stopButton" disabled>Stop</button>
+    </div>
 
-    </center>
+    <div style="margin-top: 15px;">
+        <p id = "context">Text goes here!!</p>
+    </div>
+  </center>
 
     <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
   	<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
-  
+
     <script>
       // Get the URL
       URL = window.URL
@@ -83,10 +74,6 @@
         var url = URL.createObjectURL(blob);
         sendAudioFile(blob);
       }
-
-
-
-
       async function sendAudioFile(blob) {
         var fd = new FormData();
         dd = "fdfsdds"
@@ -95,12 +82,16 @@
         {
             method: 'post',
             body: fd
-        }); 
-        setTimeout(() => {  window.parent.location.reload(); }, 2000);
-        
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.nlp.text){
+            $('#context').replaceWith(`<p id = "context">${data.nlp.text}</p>`);
+          } else {
+            $('#context').replaceWith('<p id = "context">No Text!</p>');
+          }
+        });
       }
-
     </script>
-
   </body>
 </html>

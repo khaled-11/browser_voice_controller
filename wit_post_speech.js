@@ -11,14 +11,13 @@ module.exports = async () => {
         method: 'POST',
         uri: `https://api.wit.ai/speech?v=20200513`,
         headers: {
-          Authorization: `Bearer D7XRNXUP5ASID2BBLZLBXOCP7BZWI4FX`,
+          Authorization: `Bearer HRTKN7MJ3U4MKZSEUK2Q6LQE66MLKA7S`,
           ContentType: "application/json",
           TransferEncoding:"chunked"
       },
       body: st
       };
     state = await JSON.parse(await rp(options));
-    console.log(state)
     }
     catch (e){
       console.log(e.message)
